@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Espace membre</title>
+  <style>
+    body { font-family: system-ui, sans-serif; text-align: center; padding-top: 80px; }
+    button { padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Bienvenue dans ton espace membre 👋</h1>
+  <button id="logoutBtn">Se déconnecter</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="/env.js"></script>
+  <script>
+    const supabase = window.supabase.createClient(window.env.SUPABASE_URL, window.env.SUPABASE_ANON);
+    const check = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) location.href = "/";
+    };
+    check();
+
+    document.getElementById('logoutBtn').onclick = async () => {
+      await supabase.auth.signOut();
+      location.href = "/";
+    };
+  </script>
+</body>
+</html>
